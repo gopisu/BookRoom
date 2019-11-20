@@ -1,3 +1,4 @@
+from _operator import itemgetter
 from datetime import datetime
 
 from django.core.paginator import Paginator
@@ -24,9 +25,17 @@ class RoomsTodayListView(View):
         date = datetime.today()
         all_rooms_today = []
         for room in rooms:
-            status_today = Booking.objects.filter(room = room.id, date=date)
+            status_today = Booking.objects.filter(room=room.id, date=date)
             all_rooms_today.append((room, status_today))
         paginator = Paginator(all_rooms_today, 10)  # Show 10 recipes per page
         page = request.GET.get('page')
         all_rooms_today = paginator.get_page(page)
         return render(request, 'BookingRooms/app-rooms.html', {"object_list": all_rooms_today})
+
+
+class RoomDetailsView(View):
+    def get(self, request, id):
+        room = Room.objects.get(id=id)
+        date = datetime.today()
+        bookings = Booking.objects.filter(room=id, date__gte=date)
+        return render(request, 'BookingRooms/app-room-details.html', {"room": room, "bookings": bookings})

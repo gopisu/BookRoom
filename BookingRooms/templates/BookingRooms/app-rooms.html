@@ -22,19 +22,21 @@
             <table class="table border-bottom">
                 <thead>
                 <tr class="d-flex">
-                    <th class="col-2">NAZWA</th>
+                    <th class="col-2">Sala</th>
                     <th class="col-7">Status na dzisiaj</th>
-                    <th class="col-2 center">AKCJE</th>
+                    <th class="col-2 center">Akcje</th>
                 </tr>
                 </thead>
                 <tbody class="text-color-lighter">
                 {% for room in object_list %}
                     <tr class="d-flex">
                         <td class="col-2">{{ room.0.name }}</td>
-                        <td class="col-7">
+
                             {% if room.1 %}
+                            <td class="col-7">
                                 Zajęta
                             {% else %}
+                                <td class="col-7 text-color-darker">
                                 <b> Wolna </b>
                             {% endif %}
 
