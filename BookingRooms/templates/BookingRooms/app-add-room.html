@@ -1,0 +1,41 @@
+{% extends "BookingRooms/__base__.html" %}
+
+{% block title %}Dodaj salkę{% endblock %}
+
+{% block content %}
+    <div class="dashboard-content border-dashed p-3 m-4 view-height">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mt-4 ml-4 mr-4">
+                <div class="row border-bottom border-3">
+                    <div class="col"><h3 class="color-header text-uppercase">Dodaj salkę: </h3></div>
+                    <div class="col d-flex justify-content-end mb-2">
+                        <button type="submit" class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4">Zapisz</button>
+                    </div>
+                </div>
+                <table class="table borderless">
+                    <tbody>
+                    <tr class="d-flex">
+                        <th scope="row" class="col-2">Nazwa salki</th>
+                        <td class="col-7">
+                            <input class="w-100 p-1" value="{{ room_name }}" name='room_name'>
+                        </td>
+                    </tr>
+                    <tr class="d-flex">
+                        <th scope="row" class="col-2">Wielkość salki (liczba osób)</th>
+                        <td class="col-7"><input type="number" name='room_size' value={{ room_size }} class="w-100 p-1"></td>
+                    </tr>
+                    <tr class="d-flex">
+                        <th scope="row" class="col-2">Czy sala ma projektor?</th>
+                        <td class="col-7"><input type="checkbox" name="room_projector" value="True" class="w-100 p-1"> Projektor?<br>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </form>
+    </div>
+
+
+{% endblock content %}
