@@ -1,0 +1,86 @@
+{% extends "BookingRooms/__base__.html" %}
+{% block title %}{% endblock %}
+{% block content %}
+    <div class="dashboard-content border-dashed p-3 m-4 view-height">
+
+        <div class="row border-bottom border-3 p-1 m-1">
+            <div class="col noPadding">
+                <h3 class="color-header text-uppercase">LISTA SAL</h3>
+            </div>
+            <div class="d-flex justify-content-end mb-2 pl-1">
+                <a href=""
+                   class="btn btn-success rounded-0 pt-0 pb-0 pr-4 pl-4">Dodaj
+                    rezerwację</a>
+            </div>
+            <div class="d-flex justify-content-end mb-2 pl-1">
+                <a href="" class="btn btn-success rounded-0 pt-0 pb-0 pr-4 pl-4">Dodaj
+                    salę</a>
+            </div>
+        </div>
+
+        <div class="schedules-content">
+            <table class="table border-bottom">
+                <thead>
+                <tr class="d-flex">
+                    <th class="col-2">NAZWA</th>
+                    <th class="col-7">Status na dzisiaj</th>
+                    <th class="col-2 center">AKCJE</th>
+                </tr>
+                </thead>
+                <tbody class="text-color-lighter">
+                {% for room in object_list %}
+                    <tr class="d-flex">
+                        <td class="col-2">{{ room.0.name }}</td>
+                        <td class="col-7">
+                            {% if room.1 %}
+                                Zajęta
+                            {% else %}
+                                <b> Wolna </b>
+                            {% endif %}
+
+                        </td>
+                        <td class="col-2 d-flex align-items-center justify-content-center flex-wrap">
+
+                             <a href="{% url 'room_details' room.0.id %}"
+                               class="btn btn-info rounded-0 text-light m-1">Szczegóły</a>
+                            <a href="{% url "delete_room" room.0.id %}"
+                               class="btn btn-warning rounded-0 text-light m-1">Usuń</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container2">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item">  <!-- Jump to Previous Page -->
+                        {% if object_list.has_previous %}
+                            <li class="previous"><a href="?page={{ object_list.previous_page_number }}">
+                                <span aria-hidden="true"> < poprzednia &nbsp;</span></a>
+                                {% else %}
+                            <li class="previous disabled"><a> </a>
+                        {% endif %}
+                        </li>
+                    {% for page in object_list.paginator.page_range %}
+                        {% if page == object_list.number %}
+                            <li class="pg active"><a class="page_number" href="?page={{ page }}"> | {{ page }} |</a>
+                                {% else %}
+                            <li class="pg"><a class="page_number" href="?page={{ page }}"> | {{ page }} |</a>
+                        {% endif %}
+                    {% endfor %}
+                    <li class="page-item">  <!-- Jump to Next Page -->
+                        {% if object_list.has_next %}
+                            <li class="previous"><a href="?page={{ object_list.next_page_number }}">&nbsp;następna
+                                ></a>
+                            </li>
+                        {% else %}
+                            <li class="next disabled"><a> </a>
+                        {% endif %}
+                        </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock content %}

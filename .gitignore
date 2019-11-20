@@ -1,2 +1,5 @@
 /.idea/
 BookingRooms/local_settings.py
+BookingRooms/__pycache__/
+Conference/__pycache__/
+__pycache__/manage.cpython-37.pyc
