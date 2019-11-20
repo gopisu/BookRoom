@@ -2,12 +2,13 @@ from _operator import itemgetter
 from datetime import datetime
 
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from Conference.models import *
 
-
 # Create your tests here.
+from Conference.utils import validate_positive_int, messages
+
 
 class TestView(View):
     def get(self, request):
@@ -39,3 +40,26 @@ class RoomDetailsView(View):
         date = datetime.today()
         bookings = Booking.objects.filter(room=id, date__gte=date)
         return render(request, 'BookingRooms/app-room-details.html', {"room": room, "bookings": bookings})
+
+
+class RoomAddView(View):
+
+    def get(self, request):
+        return render(request, "BookingRooms/app-add-room.html")
+
+    def post(self, request):
+        room_name = request.POST.get('room_name')
+        room_projector = request.POST.get('room_projector')
+        if room_projector == 'True':
+            room_projector = True
+        else:
+            room_projector = False
+        room_size = request.POST.get('room_size')
+        room_size = validate_positive_int(room_size)
+        if not room_size or "" in (room_name, room_projector):
+            return render(request, 'BookingRooms/app-add-room.html', {'room_name': room_name,
+                                                                      'room_projector': room_projector,
+                                                                      'room_size': room_size,
+                                                                      'message': messages['wrong_data']})
+        Room.objects.create(name=room_name, size=room_size, projector=room_projector)
+        return redirect('all_rooms')

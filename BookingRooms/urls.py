@@ -20,7 +20,7 @@ from Conference.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", RoomsTodayListView.as_view(), name="all_rooms"),
-    path("room/new/", TestView.as_view(), name="create_room"),
+    path("room/new/", RoomAddView.as_view(), name="create_room"),
     path("room/modify/<int:id>/", TestView2.as_view(), name="modify_room"),
     path("room/delete/<int:id>/", TestView2.as_view(), name="delete_room"),
     path("room/<int:id>/", RoomDetailsView.as_view(), name="room_details"),
