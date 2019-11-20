@@ -8,3 +8,7 @@ from django.views import View
 class TestView(View):
     def get(self, request):
         return render(request, "BookingRooms/test1.html")
+
+class TestView2(View):
+    def get(self, request, id):
+        return render(request, "BookingRooms/test1.html")

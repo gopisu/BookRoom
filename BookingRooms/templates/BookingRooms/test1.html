@@ -1,13 +1,13 @@
 {% extends "BookingRooms/__base__.html" %}
 {% block title %}Testuję{% endblock title %}
 {% block content %}
-
+ <div class="dashboard-content border-dashed p-3 m-4 view-height">
     <title>Testowa strona Django</title>
     <style>
         body {
             font-family: Arial, sans-serif
             font-size: 16px;
-            background: #999;
+            background: whitesmoke;
             color: #333;
         }
     </style>
@@ -20,5 +20,6 @@
     <footer>
         <p>Data wygenerowania strony: {{ actual_date }}</p>
     </footer>
-
+</div>
+</body>
 {% endblock content %}
