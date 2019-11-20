@@ -7,4 +7,4 @@ from django.views import View
 
 class TestView(View):
     def get(self, request):
-        return render(request, "BookingRooms/test.html")
+        return render(request, "BookingRooms/test1.html")
