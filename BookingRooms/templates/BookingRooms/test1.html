@@ -1,18 +1,16 @@
+{% extends "BookingRooms/__base__.html" %}
+{% block title %}Testuję{% endblock title %}
+{% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
     <title>Testowa strona Django</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial, sans-serif
             font-size: 16px;
             background: #999;
             color: #333;
         }
     </style>
-</head>
 <body>
     <h1>Ja żyję!</h1>
     <p>Jeśli widzisz ten napis, to znaczy, że aplikacja
@@ -22,5 +20,5 @@
     <footer>
         <p>Data wygenerowania strony: {{ actual_date }}</p>
     </footer>
-</body>
-</html>
+
+{% endblock content %}
