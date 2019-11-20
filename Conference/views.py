@@ -63,3 +63,32 @@ class RoomAddView(View):
                                                                       'message': messages['wrong_data']})
         Room.objects.create(name=room_name, size=room_size, projector=room_projector)
         return redirect('all_rooms')
+
+class RoomModifyView(View):
+
+    def get(self, request, id):
+        room = Room.objects.get(id=id)
+        return render(request, "BookingRooms/app-modify-room.html", {'room_name': room.name,
+                                                                      'room_projector': room.projector,
+                                                                      'room_size': room.size})
+
+    def post(self, request, id):
+        room_name = request.POST.get('room_name')
+        room_projector = request.POST.get('room_projector')
+        if room_projector == 'True':
+            room_projector = True
+        else:
+            room_projector = False
+        room_size = request.POST.get('room_size')
+        room_size = validate_positive_int(room_size)
+        if not room_size or "" in (room_name, room_projector):
+            return render(request, 'BookingRooms/app-modify-room.html', {'room_name': room_name,
+                                                                      'room_projector': room_projector,
+                                                                      'room_size': room_size,
+                                                                      'message': messages['wrong_data']})
+        room = Room.objects.get(id=id)
+        room.name=room_name
+        room.size=room_size
+        room.projector=room_projector
+        room.save()
+        return redirect('all_rooms')
