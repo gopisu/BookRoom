@@ -6,72 +6,100 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% endblock title %} | Zarezerwuj Salkę</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Charmonman:400,700|Open+Sans:400,600,700&amp;subset=latin-ext"
-        rel="stylesheet">
+          rel="stylesheet">
     <link rel="stylesheet" href="{% static "css/style.css" %}">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-    <link rel="shortcut icon" href="{% static 'images/favicon.ico' type='image/x-icon' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %} type='image/x-icon">
 </head>
 
 <body>
 
-    <header class="page-header">
-        <nav class="navbar navbar-expand-lg justify-content-between">
-            <a href="/" class="navbar-brand main-logo main-logo-smaller">
-               Zarezerwuj <span>Salkę</span>
-            </a>
-         <div class="d-flex justify-content-around">
-             <h4 class="text-light mr-3 mt-1"></h4>
-             <div class="circle-div text-center mr-1"><i class="fas fa-user icon-user"></i></div>
+<header class="page-header">
+    <nav class="navbar navbar-expand-lg justify-content-between">
+        <a href="/" class="navbar-brand main-logo main-logo-smaller">
+            Zarezerwuj <span>Salkę</span>
+        </a>
+        <div class="d-flex justify-content-around">
+            <h4 class="text-light mr-3 mt-1"></h4>
+            <div class="circle-div text-center mr-1"><i class="fas fa-user icon-user"></i></div>
 
-         </div>
-
-        </nav>
-    </header>
-
-    <section class="dashboard-section">
-        <div class="row dashboard-nowrap">
-                <ul class="nav flex-column long-bg">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url "all_rooms" %}">
-                                <span>Pulpit</span>
-                                <i class="fas fa-angle-right"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url "all_rooms" %}">
-                                <span>Salki</span>
-                                <i class="fas fa-angle-right"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">
-                                <span>Rezerwacje</span>
-                                <i class="fas fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-
-            <div class="m-4 p-3 width-medium text-color-darker">
-                {% if message %}
-                    <h3>{{ message }}</h3>
-                {% endif %}
-
-<!-- //--------------------------- page content -------------------------// -->
-{% block content %}{% endblock content %}
-<!-- //--------------------------- page content end ---------------------// -->
-
-            </div>
         </div>
-    </section>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    </nav>
+</header>
+
+<section class="dashboard-section">
+    <div class="row dashboard-nowrap">
+        <ul class="nav flex-column long-bg">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url "all_rooms" %}">
+                    <span>Salki</span>
+                    <i class="fas fa-angle-right"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">
+                    <span>Rezerwacje</span>
+                    <i class="fas fa-angle-right"></i>
+                </a>
+            </li>
+{#            <li class="nav-item">#}
+{#                <a class="nav-link" href="{% url "all_rooms" %}">#}
+{#                    <span>Wyszukiwanie</span>#}
+{#                    <i class="fas fa-angle-right"></i>#}
+{#                </a>#}
+{#            </li>#}
+
+
+            <form class="side-form" method="post" action="{% url "all_rooms"%}"> {% csrf_token %}
+                <li><label><span class="text text-color-lighter">Szukaj po dacie:</span></label></li>
+                <li><label><input type="date" class="input rounded-0 left-2 pt-0 pb-0 pr-4 pl-2" style='width:13em'
+                                  name="side_day" value="{{ side_day }}"></label></li>
+                <li><label><span class="text text-color-lighter">Szukaj po nazwie:</span></label>
+                <li><input type="text" class="input rounded-0 left-2 pt-0 pb-0 pr-4 pl-2" style='width:13em'
+                           name="searched_name" placeholder="Nazwa sali"
+                           value="{{ searched_name }}"></li>
+                <li><label><span class="text text-color-lighter">Minimalna wielkośc:</span></label></li>
+                <li><input type="number" min="0" class="input rounded-0 left-2 pt-0 pb-0 pr-4 pl-2" style='width:8em'
+                           name="searched_size" placeholder="Ile osob" value="{{ searched_size }}"></li>
+                <br>
+                <li><label><span class="text text-color-lighter">Potrzebny rzutnik?  </span></label>
+                    <input type="checkbox" class="input rounded-0 left-5 pt-0 pb-0 pr-4 pl-10"
+                           name="searched_projector" value="True" {% if searched_projector != "Without" %} checked="checked"{% endif %}></li>
+                <li>
+                    <button type="submit" class="btn btn-success rounded-0 pt-0 pb-0 pr-4 pl-4" type="submit" value="" name="search_by_many">
+                        Szukaj
+                    </button>
+                </li>
+            </form>
+        </ul>
+
+        <div class="m-4 p-3 width-medium text-color-darker">
+            {% if message %}
+                <h3>{{ message }}</h3>
+            {% endif %}
+
+            <!-- //--------------------------- page content -------------------------// -->
+            {% block content %}{% endblock content %}
+            <!-- //--------------------------- page content end ---------------------// -->
+
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
         crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
 </body>
 </html>

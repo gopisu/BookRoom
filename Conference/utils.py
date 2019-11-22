@@ -36,3 +36,11 @@ def create_redirect_param(view_name, param):
     message_text = param
     message = urlencode({'message': message_text})
     return f'{base_url}?{message}'
+
+
+def booked_rooms_ids(day):
+    bookings = Booking.objects.filter(date=day)
+    booked_ids = []
+    for booking in bookings:
+        booked_ids.append(booking.room_id)
+    return booked_ids
