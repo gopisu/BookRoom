@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
 from Conference.views import *
@@ -23,7 +24,9 @@ urlpatterns = [
     path("room/new/", RoomAddView.as_view(), name="create_room"),
     path("room/modify/<int:id>/", RoomModifyView.as_view(), name="modify_room"),
     path("room/delete/<int:id>/", TestView2.as_view(), name="delete_room"),
+    url(r'^room/book/(?P<id>[0-9]+)/(?P<day>[0-9]{4}-?[0-9]{2}-?[0-9]{2})/$', RoomBookView.as_view(), name='room_book'),
+    url(r'^room/book/(?P<id>[0-9]+)/$', RoomBookView.as_view(), name='room_book'),
+    url(r'^room/book/', RoomBookView.as_view(), name='room_book'),
     path("room/<int:id>/", RoomDetailsView.as_view(), name="room_details"),
-    path("room/book/<int:id>/", TestView2.as_view(), name="book"),
 
 ]
