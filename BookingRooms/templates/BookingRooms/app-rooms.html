@@ -8,11 +8,6 @@
                 <h3 class="color-header text-uppercase">LISTA SAL</h3>
             </div>
             <div class="d-flex justify-content-end mb-2 pl-1">
-                <a href=""
-                   class="btn btn-success rounded-0 pt-0 pb-0 pr-4 pl-4">Dodaj
-                    rezerwację</a>
-            </div>
-            <div class="d-flex justify-content-end mb-2 pl-1">
                 <a href="{% url 'create_room' %}" class="btn btn-success rounded-0 pt-0 pb-0 pr-4 pl-4">Dodaj
                     salę</a>
             </div>
@@ -45,7 +40,12 @@
 
                         </td>
                         <td class="col-2 d-flex align-items-center justify-content-center flex-wrap">
-
+                            {% if day %}
+                             <a href="{% url 'room_book' id=room.id day=day %}"
+                                {% else %}
+                                     <a href="{% url 'room_book' id=room.id %}"
+                                        {% endif %}
+                               class="btn btn-success rounded-0 text-light m-1">Zarezerwuj</a>
                              <a href="{% url 'room_details' room.id %}"
                                class="btn btn-info rounded-0 text-light m-1">Szczegóły</a>
                             <a href="{% url "delete_room" room.id %}"

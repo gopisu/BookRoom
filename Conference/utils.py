@@ -8,6 +8,7 @@ messages = {
     'already_logged_in': "Użytkownik jest już zalogowany!",
     'wrong_user_data': "Zła nazwa użytkownika lub hasło, spróbuj ponownie!",
     'wrong_data': "Proszę wypełnij poprawnie wszystkie pola.",
+    'taken_date': "Proszę wybierz inną salkę. Ta jest już zajęta we wskazanym dniu.",
     'user_exists': "Użytkownik już istnieje, wybierz inny login/email",
 }
 

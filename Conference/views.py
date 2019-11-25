@@ -4,10 +4,12 @@ from datetime import datetime
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.views import View
+from psycopg2._psycopg import IntegrityError
+
 from Conference.models import *
 
 # Create your tests here.
-from Conference.utils import validate_positive_int, messages, booked_rooms_ids
+from Conference.utils import validate_positive_int, messages, booked_rooms_ids, create_redirect_param
 
 
 class TestView(View):
@@ -16,7 +18,7 @@ class TestView(View):
 
 
 class TestView2(View):
-    def get(self, request, id):
+    def get(self, request, id, day):
         return render(request, "BookingRooms/test1.html")
 
 
@@ -35,9 +37,13 @@ class RoomsTodayListView(View):
                       {"day": day, "object_list": rooms, "booked_ids": booked_ids})
 
     def post(self, request):
+        day = datetime.today().strftime("%Y-%m-%d")
         booked_ids = []
         object_list = Room.objects.all()
-        if "search_by_day" in request.POST:
+        if "search_by_day" in request.POST and request.POST.get("searched_day") is "":
+            return render(request, 'BookingRooms/app-rooms.html',
+                          {"object_list": object_list})
+        if "search_by_day" in request.POST and request.POST.get("searched_day") is not "":
             day = request.POST.get("searched_day")
             booked_ids = booked_rooms_ids(day)
             object_list = Room.objects.all().order_by('name')
@@ -46,6 +52,8 @@ class RoomsTodayListView(View):
             object_list = paginator.get_page(page)
             return render(request, 'BookingRooms/app-rooms.html',
                           {"day": day, "object_list": object_list, "booked_ids": booked_ids})
+
+
 
         else:
             side_day = request.POST.get("side_day")
@@ -69,7 +77,8 @@ class RoomsTodayListView(View):
             object_list = paginator.get_page(page)
             return render(request, 'BookingRooms/app-rooms.html',
                           {"object_list": object_list, "booked_ids": booked_ids, "side_day": side_day,
-                           "searched_size": searched_size, "searched_name": searched_name, "searched_projector": searched_projector})
+                           "searched_size": searched_size, "searched_name": searched_name,
+                           "searched_projector": searched_projector})
 
 
 class RoomDetailsView(View):
@@ -133,8 +142,37 @@ class RoomModifyView(View):
         return redirect('all_rooms')
 
 
-"""Jako użytkownik chcę móc wyszukać sale z podaniem następujących warunków:
-nazwa sali,
-dzień,
-pojemność sali,
-dostępność rzutnika."""
+class RoomBookView(View):
+    default_day=datetime.today()
+    def get(self, request, id, day=default_day):
+        today = datetime.today()
+        room = Room.objects.get(id=id)
+        bookings = Booking.objects.filter(room=id, date__gte=today)
+        return render(request, "BookingRooms/app-room-book.html", {'room_name': room.name, "room_id": room.id,
+                                                                   "day": day, "bookings": bookings, "today": today})
+
+    def post(self, request, id, day=default_day):
+        today = datetime.today()
+        booking_date = request.POST.get('date')
+        comment = request.POST.get('comment')
+        bookings_of_current_room = []
+        room = Room.objects.get(id=id)
+        bookings = Booking.objects.filter(room=id)
+        for booking in bookings:
+            bookings_of_current_room.append(booking.date.strftime("%Y-%m-%d"))
+        if booking_date in bookings_of_current_room:
+            return render(request, "BookingRooms/app-room-book.html",
+                          {"room_name": room.name, "day": booking_date, "bookings": bookings, "today": today,
+                           "message": messages['taken_date']})
+        if booking_date < today.strftime("%Y-%m-%d") or not booking_date:
+            return render(request, "BookingRooms/app-room-book.html",
+                          {"room_name": room.name, "day": booking_date, "bookings": bookings, "today": today,
+                           "message": messages['wrong_data']})
+        Booking.objects.create(room_id=id, date=booking_date, comment=comment)
+        bookings = Booking.objects.filter(room=id)
+        for booking in bookings:
+            bookings_of_current_room.append(booking.date.strftime("%Y-%m-%d"))
+        message = f"Salkę {room.name} zarezerwowano na dzień {booking_date}"
+        return render(request, "BookingRooms/app-room-book.html",
+                      {"room_name": room.name, "day": booking_date, "bookings": bookings, "today": today,
+                       "message": message})
