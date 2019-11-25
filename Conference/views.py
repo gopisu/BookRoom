@@ -17,13 +17,14 @@ class TestView(View):
         return render(request, "BookingRooms/test1.html")
 
 
-class TestView2(View):
+class RoomDeleteView(View):
     def get(self, request, id, day):
-        return render(request, "BookingRooms/test1.html")
+        return render(request, 'BookingRooms/app-rooms.html')
 
 
 class RoomsTodayListView(View):
     def get(self, request):
+        message = request.GET.get('message')
         day = datetime.today().strftime("%Y-%m-%d")
         rooms = Room.objects.all().order_by('name')
         bookings = Booking.objects.filter(date=day)
@@ -34,7 +35,7 @@ class RoomsTodayListView(View):
         page = request.GET.get('page')
         rooms = paginator.get_page(page)
         return render(request, 'BookingRooms/app-rooms.html',
-                      {"day": day, "object_list": rooms, "booked_ids": booked_ids})
+                      {"day": day, "object_list": rooms, "booked_ids": booked_ids, 'message':message})
 
     def post(self, request):
         day = datetime.today().strftime("%Y-%m-%d")
@@ -173,6 +174,7 @@ class RoomBookView(View):
         for booking in bookings:
             bookings_of_current_room.append(booking.date.strftime("%Y-%m-%d"))
         message = f"Salkę {room.name} zarezerwowano na dzień {booking_date}"
-        return render(request, "BookingRooms/app-room-book.html",
-                      {"room_name": room.name, "day": booking_date, "bookings": bookings, "today": today,
-                       "message": message})
+        return redirect(create_redirect_param('all_rooms', message))
+        # return render(request, "BookingRooms/app-rooms.html",
+        #               {"room_name": room.name, "day": booking_date, "bookings": bookings, "today": today,
+        #                "message": message})
