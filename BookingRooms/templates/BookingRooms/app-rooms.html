@@ -18,7 +18,7 @@
                 <thead>
                 <tr class="d-flex">
                     <th class="col-2">Sala</th>
-                    <th class="col-7">Pokaż rezerwacje w dniu: <form method="post" action="">{% csrf_token %}
+                    <th class="col-7">Pokaż status w dniu: <form method="post" action="">{% csrf_token %}
                         <label><input type="date" class="input rounded-0 pt-0 pb-0 pr-4 pl-4" style='width:15em' name="searched_day" value="{{ day }}">
                     <button type="submit" class="btn btn-success rounded-0 pt-0 pb-0 pr-4 pl-4" name="search_by_day">Szukaj</button>
                         </label></form></th>
