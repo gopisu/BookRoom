@@ -19,15 +19,18 @@ from django.urls import path
 from Conference.views import *
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     path("", RoomsTodayListView.as_view(), name="all_rooms"),
     path("index/", RoomsTodayListView.as_view(), name="all_rooms"),
     path("room/new/", RoomAddView.as_view(), name="create_room"),
     path("room/modify/<int:id>/", RoomModifyView.as_view(), name="modify_room"),
     path("room/delete/<int:id>/", RoomDeleteView.as_view(), name="delete_room"),
-    url(r'^room/book/(?P<id>[0-9]+)/(?P<day>[0-9]{4}-?[0-9]{2}-?[0-9]{2})/$', RoomBookView.as_view(), name='room_book'),
-    url(r'^room/book/(?P<id>[0-9]+)/$', RoomBookView.as_view(), name='room_book'),
-    url(r'^room/book/', RoomBookView.as_view(), name='room_book'),
+    url(
+        r"^room/book/(?P<id>[0-9]+)/(?P<day>[0-9]{4}-?[0-9]{2}-?[0-9]{2})/$",
+        RoomBookView.as_view(),
+        name="room_book",
+    ),
+    url(r"^room/book/(?P<id>[0-9]+)/$", RoomBookView.as_view(), name="room_book"),
+    url(r"^room/book/", RoomBookView.as_view(), name="room_book"),
     path("room/<int:id>/", RoomDetailsView.as_view(), name="room_details"),
-
 ]

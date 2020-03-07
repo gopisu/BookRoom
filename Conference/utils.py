@@ -5,11 +5,11 @@ from urllib.parse import urlencode
 from Conference.models import *
 
 messages = {
-    'already_logged_in': "Użytkownik jest już zalogowany!",
-    'wrong_user_data': "Zła nazwa użytkownika lub hasło, spróbuj ponownie!",
-    'wrong_data': "Proszę wypełnij poprawnie wszystkie pola.",
-    'taken_date': "Proszę wybierz inną salkę. Ta jest już zajęta we wskazanym dniu.",
-    'user_exists': "Użytkownik już istnieje, wybierz inny login/email",
+    "already_logged_in": "Użytkownik jest już zalogowany!",
+    "wrong_user_data": "Zła nazwa użytkownika lub hasło, spróbuj ponownie!",
+    "wrong_data": "Proszę wypełnij poprawnie wszystkie pola.",
+    "taken_date": "Proszę wybierz inną salkę. Ta jest już zajęta we wskazanym dniu.",
+    "user_exists": "Użytkownik już istnieje, wybierz inny login/email",
 }
 
 
@@ -35,8 +35,8 @@ def validate_positive_int(number):
 def create_redirect_param(view_name, param):
     base_url = reverse(view_name)
     message_text = param
-    message = urlencode({'message': message_text})
-    return f'{base_url}?{message}'
+    message = urlencode({"message": message_text})
+    return f"{base_url}?{message}"
 
 
 def booked_rooms_ids(day):

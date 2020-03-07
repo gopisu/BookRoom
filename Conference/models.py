@@ -3,6 +3,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class Room(models.Model):
     name = models.CharField(max_length=64)
     size = models.PositiveIntegerField(null=True)
@@ -20,4 +21,7 @@ class Booking(models.Model):
     updated = models.DateTimeField(auto_now=True, null=True)
 
     class Meta:
-        unique_together = ('date', 'room',)
+        unique_together = (
+            "date",
+            "room",
+        )
